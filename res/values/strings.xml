@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="hello">Hello World, ApiDemos!</string>
+    <string name="app_name">CameraUploader</string>
+    
+    <string name="title">Category Title</string>
+    
+    <string name="withshot_title">Action with take picture</string>
+    <string name="withshot_summaryOn">on</string>
+    <string name="withshot_summaryOff">off</string>
+    <string name="withshot_defaultValue">false</string>
+    
+    <string name="postormail_title">Action type</string>
+    <string name="postormail_summary">post</string>
+    <string name="postormail_defaultValue">post</string>
+    <string name="postormail_dialogTitle">Action type</string>
+    
+    <string name="posturl_title">POST URL</string>
+    <string name="posturl_summary">settings for posting url</string>
+    <string name="posturl_dialogTitle">Input POST URL</string>
+    <string name="posturl_defaultValue">http://mm.cs.uec.ac.jp/maruyama/file/android/simple.php</string>
+    
+    <string name="filename_title">File name</string>
+    <string name="filename_summary">input upload filename</string>
+    <string name="filename_dialogTitle">Input File Name</string>
+    <string name="filename_defaultValue">android.jpg</string>
+
+	<string name="postscreen_title">post setting</string>
+	<string name="postscreen_summary">url file type etc...</string>
+	
+	<string name="mailscreen_title">mail setting</string>
+	<string name="mailscreen_summary">address title body</string>
+	
+	<string name="mailaddress_title">address</string>
+	<string name="mailaddress_summary">none</string>
+	<string name="mailaddress_dialogTitle">Input send address</string>
+	
+	<string name="mailtitle_title">mail title</string>
+	<string name="mailtitle_summary">none</string>
+	<string name="mailtitle_dialogTitle">Input mail title</string>
+	
+	<string name="mailbody_title">mail body</string>
+	<string name="mailbody_summary">none</string>
+	<string name="mailbody_dialogTitle">Input mail body</string>
+</resources>

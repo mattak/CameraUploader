@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+<RadioGroup 
+	android:id="@+id/RadioGroup_getpost" 
+	android:orientation="horizontal"
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content">    
+<RadioButton 
+	android:text="GET" 
+	android:id="@+id/RadioButton_get" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content" 
+	android:checked="true"
+	/>
+<RadioButton 
+	android:text="POST" 
+	android:id="@+id/RadioButton_post" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content" 
+	/>
+</RadioGroup>
+</LinearLayout>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left">
+
+<Button 
+	android:text="GET" 
+	android:id="@+id/execbutton" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content"
+	/>
+<EditText 
+	android:text="http://sample.com/simple.php" 
+	android:id="@+id/edittext_uri" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	/>
+</LinearLayout>
+
+<ScrollView 
+	android:id="@+id/ScrollView01" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content">
+<TextView 
+	android:text="" 
+	android:hint="return request here"
+	android:id="@+id/textview_response" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content"
+	/>
+</ScrollView>
+</LinearLayout>

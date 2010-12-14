@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="@string/title">
+		<CheckBoxPreference
+			android:key="withshot"
+			android:title="@string/withshot_title"
+			android:summaryOn="@string/withshot_summaryOn"
+			android:summaryOff="@string/withshot_summaryOff"
+			android:defaultValue="@string/withshot_defaultValue"></CheckBoxPreference>
+		
+		<ListPreference
+			android:key="postormail"
+			android:title="@string/postormail_title"
+			android:summary="@string/postormail_summary"
+			android:dialogTitle="@string/postormail_dialogTitle"
+			android:entries="@array/postormail_entries"
+			android:entryValues="@array/postormail_entryValues"
+			android:defaultValue="@string/postormail_defaultValue"></ListPreference>
+		
+		<EditTextPreference
+			android:key="filename"
+			android:title="@string/filename_title"
+			android:summary="@string/filename_summary"
+			android:dialogTitle="@string/filename_dialogTitle"
+			android:defaultValue="@string/filename_defaultValue"></EditTextPreference>
+		<PreferenceScreen
+			android:key="postscreen"
+			android:title="@string/postscreen_title"
+			android:summary="@string/postscreen_summary">
+			<EditTextPreference
+			android:key="posturl"
+			android:title="@string/posturl_title"
+			android:summary="@string/posturl_summary"
+			android:dialogTitle="@string/posturl_dialogTitle"
+			android:defaultValue="@string/posturl_defaultValue"></EditTextPreference>
+		</PreferenceScreen>
+		<PreferenceScreen
+			android:key="mailscreen"
+			android:title="@string/mailscreen_title"
+			android:summary="@string/mailscreen_summary">
+			<EditTextPreference
+				android:key="mailaddress"
+				android:title="@string/mailaddress_title"
+				android:summary="@string/mailaddress_summary"
+				android:dialogTitle="@string/mailaddress_dialogTitle"></EditTextPreference>
+			<EditTextPreference
+				android:key="mailtitle"
+				android:title="@string/mailtitle_title"
+				android:summary="@string/mailtitle_summary"
+				android:dialogTitle="@string/mailtitle_dialogTitle"></EditTextPreference>
+			<EditTextPreference
+				android:key="mailbody"
+				android:title="@string/mailbody_title"
+				android:summary="@string/mailbody_summary"
+				android:dialogTitle="@string/mailbody_dialogTitle"></EditTextPreference>
+		</PreferenceScreen>
+		
+	</PreferenceCategory>
+</PreferenceScreen>
