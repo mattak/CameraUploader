@@ -50,18 +50,23 @@ public class SDcard{
 		return buf.toString();
 	}
 	
-	public static void savePreferenceImageFile(Context context, byte[] data){
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-		String filename=sp.getString("filename", "");
+	public static void saveByteFile(String filepath, byte[] w)throws IOException{
+		FileOutputStream fos=null;
+		try{
+			fos=new FileOutputStream(filepath);
+			fos.write(w);
+			fos.close();
+		}catch(IOException e){
+			if (fos!=null)fos.close();
+			throw e;
+		}
+	}
+	
+	
+	public static void savePreferencedFile(Context context,byte[] data)throws IOException{
+		PreferenceController control = new PreferenceController(context);
+		String filename=control.getSaveFilePath();
 		saveByteFile(filename,data);
 	}
 	
-	public static void saveByteFile(String filename, byte[] data){
-		
-		try{
-			FileOutputStream fos= new FileOutputStream(new File(filename));
-		}catch(IOException e){
-			Log.d(LOGTAG,"save byte file ioexception");
-		}
-	}
 }

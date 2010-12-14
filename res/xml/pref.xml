@@ -56,6 +56,20 @@
 				android:summary="@string/mailbody_summary"
 				android:dialogTitle="@string/mailbody_dialogTitle"></EditTextPreference>
 		</PreferenceScreen>
-		
+		<PreferenceScreen
+			android:key="camerascreen"
+			android:title="@string/camerascreen_title"
+			android:summary="@string/camerascreen_summary">
+			<CheckBoxPreference
+				android:key="camera_autofocus"
+				android:title="@string/camera_autofocus_title"
+				android:summaryOn="@string/camera_autofocus_summaryOn"
+				android:summaryOff="@string/camera_autofocus_summaryOff"></CheckBoxPreference>
+			<CheckBoxPreference
+				android:key="camera_flash"
+				android:title="@string/camera_flash_title"
+				android:summaryOn="@string/camera_flash_summaryOn"
+				android:summaryOff="@string/camera_flash_summaryOff"></CheckBoxPreference>
+		</PreferenceScreen>
 	</PreferenceCategory>
 </PreferenceScreen>

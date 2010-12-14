@@ -31,6 +31,14 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f060001;
+        public static final int camera_autofocus_summaryOff=0x7f060027;
+        public static final int camera_autofocus_summaryOn=0x7f060026;
+        public static final int camera_autofocus_title=0x7f060025;
+        public static final int camera_flash_summaryOff=0x7f060024;
+        public static final int camera_flash_summaryOn=0x7f060023;
+        public static final int camera_flash_title=0x7f060022;
+        public static final int camerascreen_summary=0x7f060021;
+        public static final int camerascreen_title=0x7f060020;
         public static final int filename_defaultValue=0x7f060012;
         public static final int filename_dialogTitle=0x7f060011;
         public static final int filename_summary=0x7f060010;
