@@ -5,7 +5,7 @@ package ylab.donut.camerauploader;
  * Description:
  * 	Camera Surface View
  * Last modified:
- * 	10/12/10
+ * 	10/12/15
  * */
 
 import android.app.*;
@@ -14,6 +14,7 @@ import android.view.*;
 import android.widget.Toast;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
+import android.hardware.Camera.Parameters;
 
 import android.preference.PreferenceManager;
 import android.util.*;
@@ -25,10 +26,15 @@ public class CameraView extends SurfaceView
 	implements SurfaceHolder.Callback{
 	private SurfaceHolder holder;
 	private Camera camera;
+	private CameraActivity cameraActivity;
+	private boolean apihigh=true;
+	private boolean touchhold=true;
 	private final static String LOGTAG ="CameraView";
 	
-	public CameraView(Context context){
+	public CameraView(CameraActivity context){
 		super(context);
+		cameraActivity = context;
+		
 		// Surface Holder Creation
 		holder=getHolder();
 		holder.addCallback(this);
@@ -62,7 +68,24 @@ public class CameraView extends SurfaceView
 			params.setPreviewSize(optimalSize.width,optimalSize.height);
 		}else{
 			params.setPreviewSize(w,h);
+			apihigh=false;
 		}
+		
+		//
+		PreferenceController control=new PreferenceController(cameraActivity);
+		if(control.getBoolean("camera_flash")){
+			params.remove("gps-latitude");
+			params.remove("gps-longitude");
+			params.remove("gps-altitude");
+			
+			params.set("gps-latitude", "35.0");
+			params.set("gps-longitude", "137.0");
+			params.set("gps-altitude", "50");
+			params.set("jpeg-quality", "100");
+			params.set("gps-timestamp", "2010/12/15");
+		}
+		
+		
 		camera.setParameters(params);
 		camera.startPreview();
 	}
@@ -79,29 +102,23 @@ public class CameraView extends SurfaceView
 	//----------------------------------------------
 	public boolean onTouchEvent(MotionEvent event){
 		if(event.getAction()==MotionEvent.ACTION_UP){
-			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-			Boolean b=pref.getBoolean("withshot",false);
-			String withshot=null;
-			if( b ){
-				withshot="true";
-			}else{
-				withshot="false";
+			// api level is low or first touch 
+			if( touchhold ){
+				//SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+				//String withshot= pref.getBoolean("withshot", false) ? "true" : "false";
+				//Toast.makeText(this.getContext(), "takepicture:"+withshot, Toast.LENGTH_SHORT).show();
+				takePicture();
 			}
-			Toast.makeText(this.getContext(), "takepicture:"+withshot, Toast.LENGTH_LONG).show();
-			//camera.stopPreview();
-			Log.d(LOGTAG,"stopPreview before takepicture");
 			
-			
-			takePicture();
-			Log.d(LOGTAG,"takedpicture"+camera);
-			
-			Camera.Parameters params=camera.getParameters();
-			camera.setParameters(params);
-			
-			//waitMillis(1000);
-			
-			camera.startPreview();
-			Log.d(LOGTAG,"restart startPreview after takepicture");
+			if(!touchhold){// || !apihigh){
+				Log.d(LOGTAG,"!touchhold || !apihigh");
+				touchhold=true;
+				Camera.Parameters params=camera.getParameters();
+				camera.setParameters(params);
+				camera.startPreview();
+			}else{
+				touchhold=false;
+			}
 		}
 		return true;
 	}
@@ -111,38 +128,42 @@ public class CameraView extends SurfaceView
 	//-------------------------------------------
 	public void takePicture(){
 		// Camera Screen Shot
-		
-		camera.takePicture(ShutterListener,null,new Camera.PictureCallback() {
-			@Override
-			public void onPictureTaken(byte[] data, Camera camera) {
-				// TODO Auto-generated method stub
-				Log.d(LOGTAG,"onPictureTakencalled");
-				try{
-					data2sd(getContext(),data,"test.jpg");
-					Log.d(LOGTAG,"data2sd called");
-				}catch(Exception e){
-					Log.e(LOGTAG,"data2sd false"+e.toString());
-				}
-			}
-		});
-	}
-	
-	// Byte data -> SD card
-	private static void data2sd(Context context, 
-			byte[] w,String fileName) throws Exception{
-		// data is stored on SD card
-		FileOutputStream fos=null;
-		try{
-			fos=new FileOutputStream("/sdcard/"+fileName);
-			fos.write(w);
-			fos.close();
-		}catch(Exception e){
-			if (fos!=null)fos.close();
-			throw e;
+		PreferenceController control=new PreferenceController(cameraActivity);
+		if(!control.getBoolean("camera_autofocus")){
+			camera.takePicture(shutterListener,null, pictureCallback);
+		}else{
+			camera.autoFocus(autoFocusCallback);
 		}
 	}
 	
-	private Camera.ShutterCallback ShutterListener=new Camera.ShutterCallback(){
+	
+	// Camera callbacks
+	//-------------------------------------------
+	private Camera.PictureCallback pictureCallback =new Camera.PictureCallback(){
+		@Override
+		public void onPictureTaken(byte[] data, Camera camera) {
+			// TODO Auto-generated method stub
+			Log.d(LOGTAG,"onPictureTaken called");
+			try{
+				SDcard.savePreferencedFile(cameraActivity, data);
+				cameraActivity.doAction();
+				Log.d(LOGTAG,"data2sd called");
+			}catch(Exception e){
+				Log.e(LOGTAG,"data2sd false:"+e.toString());
+			}
+		}
+	};
+	
+	private Camera.AutoFocusCallback autoFocusCallback=new Camera.AutoFocusCallback() {
+		@Override
+		public void onAutoFocus(boolean success, Camera camera) {
+			// TODO Auto-generated method stub
+			camera.autoFocus(null);
+			camera.takePicture(shutterListener, null, pictureCallback);
+		}
+	};
+	
+	private Camera.ShutterCallback shutterListener=new Camera.ShutterCallback(){
 		public void onShutter(){
 			Log.d(LOGTAG,"shutted");
 		}
@@ -178,11 +199,5 @@ public class CameraView extends SurfaceView
 		}
 		return optimalSize;
 	}
-	private void waitMillis(long mili){
-		long start=java.lang.System.currentTimeMillis();
-		long end=start;
-		while((end-start)>mili){
-			end=java.lang.System.currentTimeMillis();
-		}
-	}
+	
 }

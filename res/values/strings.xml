@@ -42,4 +42,15 @@
 	<string name="mailbody_title">mail body</string>
 	<string name="mailbody_summary">none</string>
 	<string name="mailbody_dialogTitle">Input mail body</string>
+	
+	<string name="camerascreen_title">camera setting</string>
+	<string name="camerascreen_summary">flash focus front...</string>
+	
+	<string name="camera_flash_title">camera flash</string>
+	<string name="camera_flash_summaryOn">on</string>
+	<string name="camera_flash_summaryOff">off</string>
+	
+	<string name="camera_autofocus_title">camera autofocus</string>
+	<string name="camera_autofocus_summaryOn">on</string>
+	<string name="camera_autofocus_summaryOff">off</string>
 </resources>

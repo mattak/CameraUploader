@@ -6,7 +6,12 @@ package ylab.donut.camerauploader;
  *  Camera activity. Shot the photo
  *  
  * Last up date:
- *  10/12/9
+ *  10/12/15
+ *  
+ * What should i do next:
+ *  resolusion setting.
+ *  layout image.
+ *  gps lat lon.
  * */
 import java.io.*;
 import java.util.*;
@@ -14,6 +19,7 @@ import java.util.*;
 import org.apache.http.client.ClientProtocolException;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.*;
@@ -23,7 +29,7 @@ import android.content.*;
 import android.util.Log;
 
 // Camera 
-public class Camera extends Activity{
+public class CameraActivity extends Activity{
 	private final static String LOGTAG="Camera";
 	private CameraView cameraView;
 	// Application initialize
@@ -80,5 +86,40 @@ public class Camera extends Activity{
 	public void onStop(){
 		super.onStop();
 		Log.d(LOGTAG,"onStop");
+	}
+	
+	// Intent 
+	//----------------------------------------------
+	public void doAction(){
+		PreferenceController control = new PreferenceController(this);
+		if(!control.getBoolean("withshot"))return;
+		
+		String type = control.getString("postormail");
+		String fpath = control.getSaveFilePath();
+		
+		if( type.equals("post")){
+			Log.d(LOGTAG,"post action");
+			String posturl = control.getString("posturl");
+			try{
+				Toast.makeText(this, "now posting", Toast.LENGTH_SHORT).show();
+				NetClient.doPostFile(posturl, new File(fpath));
+				Toast.makeText(this, "post succeed", Toast.LENGTH_SHORT).show();
+			}catch(IOException e){
+				Toast.makeText(this, "error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+			}
+		}else if( type.equals("mail") ){
+			Log.d(LOGTAG,"mail action");
+			String[] uriString = {control.getString("mailaddress")};
+			String mailbody = control.getString("mailbody");
+			String mailtitle = control.getString("mailtitle");
+			String fullpath = "file://" + fpath;
+			Intent intent=new Intent(Intent.ACTION_SEND);
+			intent.putExtra(Intent.EXTRA_EMAIL, uriString);
+			intent.putExtra(Intent.EXTRA_SUBJECT, mailtitle);
+			intent.putExtra(Intent.EXTRA_TEXT, mailbody);
+			intent.setType("image/jpeg");
+			intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(fullpath));
+			startActivity(intent);
+		}
 	}
 }
