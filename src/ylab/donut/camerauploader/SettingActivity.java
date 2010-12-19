@@ -65,33 +65,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 	
 	// Privates
 	//-------------------------------------------
-	/*private void setPostListener(){
-        Button execButton = (Button) findViewById(R.id.button_post);
-        execButton.setOnClickListener(new OnClickListener(){
-        	public void onClick(View v){
-        		TextView responseView = (TextView)findViewById(R.id.textview_response);
-        		EditText edit_uri = (EditText)findViewById(R.id.edittext_uri);
-        		EditText edit_file = (EditText)findViewById(R.id.edittext_filename);
-        		String uri = edit_uri.getText().toString();
-        		String filename = edit_file.getText().toString();
-        		String response;
-        		try{
-        			SDcard.writeString(filename,"post check from android mobile");
-        			response = NetClient.doGet(uri, null);
-        			//response = NetClient.doPostFile(uri, new File("/sdcard/"+filename));
-    				responseView.setText(response);
-        		}catch(ClientProtocolException e){
-        			e.printStackTrace();
-        			Log.d(LOGTAG,"protocol:failure");
-        			responseView.setText("protocol fail");
-        		}catch(IOException e){
-        			e.printStackTrace();
-        			Log.d(LOGTAG,"get failure");
-        			responseView.setText("ioexception fail");
-        		}
-        	}
-        });
-	}*/
+	
 	
 	// Preference Summary Functions
 	//-------------------------------------------

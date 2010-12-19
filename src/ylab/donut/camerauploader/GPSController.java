@@ -32,4 +32,25 @@ public class GPSController implements LocationListener{
 	public void onStatusChanged(String provider,int status,Bundle extras){
 		
 	}
+	
+	// public Get Method
+	//-----------------------------------
+	public double getLatitude(){
+		return lat;
+	}
+	public double getLongitude(){
+		return lon;
+	}
+	public double getAltitude(){
+		return alt;
+	}
+	public double getSpeed(){
+		return speed;
+	}
+	public float getAccuracy(){
+		return accuracy;
+	}
+	public long getTimestamp(){
+		return timestamp;
+	}
 }

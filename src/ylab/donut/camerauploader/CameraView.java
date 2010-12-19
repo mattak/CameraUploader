@@ -74,17 +74,8 @@ public class CameraView extends SurfaceView
 		//
 		PreferenceController control=new PreferenceController(cameraActivity);
 		if(control.getBoolean("camera_flash")){
-			params.remove("gps-latitude");
-			params.remove("gps-longitude");
-			params.remove("gps-altitude");
-			
-			params.set("gps-latitude", "35.0");
-			params.set("gps-longitude", "137.0");
-			params.set("gps-altitude", "50");
-			params.set("jpeg-quality", "100");
-			params.set("gps-timestamp", "2010/12/15");
+			setGeoParams(params);
 		}
-		
 		
 		camera.setParameters(params);
 		camera.startPreview();
@@ -104,9 +95,6 @@ public class CameraView extends SurfaceView
 		if(event.getAction()==MotionEvent.ACTION_UP){
 			// api level is low or first touch 
 			if( touchhold ){
-				//SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-				//String withshot= pref.getBoolean("withshot", false) ? "true" : "false";
-				//Toast.makeText(this.getContext(), "takepicture:"+withshot, Toast.LENGTH_SHORT).show();
 				takePicture();
 			}
 			
@@ -123,7 +111,6 @@ public class CameraView extends SurfaceView
 		return true;
 	}
 	
-	
 	// Take Picture 
 	//-------------------------------------------
 	public void takePicture(){
@@ -135,7 +122,6 @@ public class CameraView extends SurfaceView
 			camera.autoFocus(autoFocusCallback);
 		}
 	}
-	
 	
 	// Camera callbacks
 	//-------------------------------------------
@@ -200,4 +186,16 @@ public class CameraView extends SurfaceView
 		return optimalSize;
 	}
 	
+	private void setGeoParams(Camera.Parameters params){
+		
+		params.remove("gps-latitude");
+		params.remove("gps-longitude");
+		params.remove("gps-altitude");
+		
+		params.set("gps-latitude", "35.0");
+		params.set("gps-longitude", "137.0");
+		params.set("gps-altitude", "50");
+		params.set("jpeg-quality", "100");
+		params.set("gps-timestamp", "2010/12/15");
+	}
 }

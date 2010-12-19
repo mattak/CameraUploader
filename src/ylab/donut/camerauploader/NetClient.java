@@ -43,13 +43,13 @@ public class NetClient{
 		return EntityUtils.toString(DoRequest(method));
 	}
 	
-	public static String doPostFile(String uri, File file)
+	public static String doPostFile(String uri, String postname, File file)
 		throws ClientProtocolException,IOException{
 		HttpPost post = new HttpPost(uri);
 		MultipartEntity entity= new MultipartEntity();
 		post.setEntity(entity);
 		FileBody fileBody = new FileBody(file);
-		entity.addPart("file", fileBody);
+		entity.addPart(postname, fileBody);
 		return EntityUtils.toString(DoRequest(post));
 	}
 	

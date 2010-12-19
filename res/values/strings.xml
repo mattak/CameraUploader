@@ -20,6 +20,11 @@
     <string name="posturl_dialogTitle">Input POST URL</string>
     <string name="posturl_defaultValue">http://mm.cs.uec.ac.jp/maruyama/file/android/simple.php</string>
     
+    <string name="postname_title">POST name</string>
+    <string name="postname_summary">sending</string>
+    <string name="postname_dialogTitle">Input post name on server side</string>
+    <string name="postname_defaultValue">file</string>
+    
     <string name="filename_title">File name</string>
     <string name="filename_summary">input upload filename</string>
     <string name="filename_dialogTitle">Input File Name</string>

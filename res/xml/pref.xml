@@ -30,11 +30,17 @@
 			android:title="@string/postscreen_title"
 			android:summary="@string/postscreen_summary">
 			<EditTextPreference
-			android:key="posturl"
-			android:title="@string/posturl_title"
-			android:summary="@string/posturl_summary"
-			android:dialogTitle="@string/posturl_dialogTitle"
-			android:defaultValue="@string/posturl_defaultValue"></EditTextPreference>
+				android:key="posturl"
+				android:title="@string/posturl_title"
+				android:summary="@string/posturl_summary"
+				android:dialogTitle="@string/posturl_dialogTitle"
+				android:defaultValue="@string/posturl_defaultValue"></EditTextPreference>
+			<EditTextPreference
+				android:key="postname"
+				android:title="@string/postname_title"
+				android:summary="@string/postname_summary"
+				android:dialogTitle="@string/postname_dialogTitle"
+				android:defaultValue="@string/postname_defaultValue"></EditTextPreference>
 		</PreferenceScreen>
 		<PreferenceScreen
 			android:key="mailscreen"

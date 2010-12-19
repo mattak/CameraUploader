@@ -38,18 +38,8 @@ public class CameraActivity extends Activity{
 		Log.d(LOGTAG,"onCreate");
 		cameraView=new CameraView(this);
 		setContentView(cameraView);
-		/*setContentView(R.layout.main);
-		
-		Button bt=(Button)this.findViewById(R.id.execbutton);
-		bt.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){
-				EditText text=(EditText)findViewById(R.id.edittext_uri);
-				SharedPreferences shared=PreferenceManager.getDefaultSharedPreferences(text.getContext());
-				String uri=shared.getString("posturl", "");
-				text.setText(uri);
-			}});*/
 	}
-		
+	
 	// menu
 	//--------------------------------------------
 	public boolean onCreateOptionsMenu(Menu menu){
@@ -95,31 +85,42 @@ public class CameraActivity extends Activity{
 		if(!control.getBoolean("withshot"))return;
 		
 		String type = control.getString("postormail");
-		String fpath = control.getSaveFilePath();
 		
 		if( type.equals("post")){
 			Log.d(LOGTAG,"post action");
-			String posturl = control.getString("posturl");
-			try{
-				Toast.makeText(this, "now posting", Toast.LENGTH_SHORT).show();
-				NetClient.doPostFile(posturl, new File(fpath));
-				Toast.makeText(this, "post succeed", Toast.LENGTH_SHORT).show();
-			}catch(IOException e){
-				Toast.makeText(this, "error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
-			}
+			postAction(control);
 		}else if( type.equals("mail") ){
-			Log.d(LOGTAG,"mail action");
-			String[] uriString = {control.getString("mailaddress")};
-			String mailbody = control.getString("mailbody");
-			String mailtitle = control.getString("mailtitle");
-			String fullpath = "file://" + fpath;
-			Intent intent=new Intent(Intent.ACTION_SEND);
-			intent.putExtra(Intent.EXTRA_EMAIL, uriString);
-			intent.putExtra(Intent.EXTRA_SUBJECT, mailtitle);
-			intent.putExtra(Intent.EXTRA_TEXT, mailbody);
-			intent.setType("image/jpeg");
-			intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(fullpath));
-			startActivity(intent);
+			mailAction(control);
 		}
 	}
+	
+	private void postAction(PreferenceController control){
+		String url=control.getString("posturl");
+		String name=control.getString("postname");
+		String fpath=control.getSaveFilePath();
+		try{
+			Toast.makeText(this, "now posting", Toast.LENGTH_SHORT).show();
+			NetClient.doPostFile(url, name, new File(fpath));
+			Toast.makeText(this, "post succeed", Toast.LENGTH_SHORT).show();
+		}catch(IOException e){
+			Toast.makeText(this, "error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private void mailAction(PreferenceController control){
+		String[] uriString = {control.getString("mailaddress")};
+		String mailbody = control.getString("mailbody");
+		String mailtitle = control.getString("mailtitle");
+		String fpath = control.getSaveFilePath();
+		String fullpath = "file://" + fpath;
+		
+		Intent intent=new Intent(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_EMAIL, uriString);
+		intent.putExtra(Intent.EXTRA_SUBJECT, mailtitle);
+		intent.putExtra(Intent.EXTRA_TEXT, mailbody);
+		intent.setType("image/jpeg");
+		intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(fullpath));
+		startActivity(intent);
+	}
+	
 }
