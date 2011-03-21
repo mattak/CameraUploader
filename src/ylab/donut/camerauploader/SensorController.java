@@ -1,18 +1,24 @@
 package ylab.donut.camerauploader;
 
 import java.util.List;
+import java.util.Observer;
+import java.util.Observable;
 
 import android.content.*;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
-public class SensorController implements SensorEventListener{
+public class SensorController extends Observable implements SensorEventListener{
+	private final static String LOGTAG = "Sensor";
 	private static SensorController instance = new SensorController();
-	private SensorManager sensorManager;
-	private Sensor accelerometer;
-	private Sensor orientation;
+	private static SensorManager sensorManager;
+	private static Sensor accelerometer;
+	private static Sensor orientation;
+	private static float[] aVector=new float[4];
+	private static float[] oVector=new float[4];
 	
 	private SensorController(){}
 	public static SensorController getInstance(){
@@ -31,11 +37,11 @@ public class SensorController implements SensorEventListener{
 	public void start(){
 		if(accelerometer!=null){
 			sensorManager.registerListener(this,
-					accelerometer,SensorManager.SENSOR_DELAY_FASTEST);
+					accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
 		}
 		if(orientation!=null){
 			sensorManager.registerListener(this,
-					orientation, SensorManager.SENSOR_DELAY_FASTEST);
+					orientation, SensorManager.SENSOR_DELAY_NORMAL);
 		}
 	}
 	
@@ -44,15 +50,52 @@ public class SensorController implements SensorEventListener{
 	}
 	
 	public void onSensorChanged(SensorEvent event){
-		for(int i=0; i<3; i++){
-			int w=(int)(10*event.values[i]);
-			event.values[i]=(float)(w/10.0f);
-		}
+		//
+		//for(int i=0; i<3; i++){
+		//	int w=(int)(10*event.values[i]);
+		//	event.values[i]=(float)(w/10.0f);
+		//}
 		
 		if(event.sensor==accelerometer){
-			
+			aVector[0] = event.values[0];
+			aVector[1] = event.values[1];
+			aVector[2] = event.values[2];
+		}else if(event.sensor==orientation){
+			oVector[0] = event.values[0];
+			oVector[1] = event.values[1];
+			oVector[2] = event.values[2];
+		}
+		this.notifyObservers();
+		Log.d(LOGTAG,"--sensorchanged--");
+	}
+	
+	public void onAccuracyChanged(Sensor sensor, int accuracy){
+		if( sensor == accelerometer ){
+			aVector[3] = accuracy;
+		}else if( sensor == orientation ){
+			oVector[3] = accuracy;
 		}
 	}
 	
-	public void onAccuracyChanged(Sensor sensor, int accuracy){}
+	public static float[] getAccelerometor(){
+		return aVector;
+	}
+	
+	public static float[] getOrientation(){
+		return oVector;
+	}	
+	
+	// Observer
+	//--------------------------------
+	public void addObserver(Observer observer){
+		super.addObserver(observer);
+	}
+	public void removeObserver(Observer observer){
+		super.deleteObserver(observer);
+	}
+	public void notifyObservers(){
+		setChanged();
+		super.notifyObservers();
+		clearChanged();
+	}
 }

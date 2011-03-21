@@ -27,13 +27,16 @@ public class CameraView extends SurfaceView
 	private SurfaceHolder holder;
 	private Camera camera;
 	private CameraActivity cameraActivity;
+	private PreferenceController preferenceController;
 	private boolean apihigh=true;
-	private boolean touchhold=true;
+	private boolean touchhold=false;
+	private boolean tackenpicture=false;
 	private final static String LOGTAG ="CameraView";
 	
 	public CameraView(CameraActivity context){
 		super(context);
 		cameraActivity = context;
+		preferenceController= new PreferenceController(cameraActivity);
 		
 		// Surface Holder Creation
 		holder=getHolder();
@@ -71,9 +74,11 @@ public class CameraView extends SurfaceView
 			apihigh=false;
 		}
 		
-		//
+		
+		setPictureSize(params,w,h);
+		setJpegQuality(params);
 		PreferenceController control=new PreferenceController(cameraActivity);
-		if(control.getBoolean("camera_flash")){
+		if(control.getBoolean("camera_latlon")){
 			setGeoParams(params);
 		}
 		
@@ -94,7 +99,7 @@ public class CameraView extends SurfaceView
 	public boolean onTouchEvent(MotionEvent event){
 		if(event.getAction()==MotionEvent.ACTION_UP){
 			// api level is low or first touch 
-			if( touchhold ){
+			/*if( touchhold ){
 				takePicture();
 			}
 			
@@ -106,21 +111,45 @@ public class CameraView extends SurfaceView
 				camera.startPreview();
 			}else{
 				touchhold=false;
-			}
+			}*/
 		}
 		return true;
+	}
+	
+	// Restart Preview
+	//-------------------------------------------
+	public void restartPreview(){
+		Log.d(LOGTAG,"cameraview touch");
+		if(!touchhold && tackenpicture){
+			tackenpicture = false;
+			Camera.Parameters params=camera.getParameters();
+			camera.setParameters(params);
+			camera.startPreview();
+		}
 	}
 	
 	// Take Picture 
 	//-------------------------------------------
 	public void takePicture(){
 		// Camera Screen Shot
-		PreferenceController control=new PreferenceController(cameraActivity);
-		if(!control.getBoolean("camera_autofocus")){
-			camera.takePicture(shutterListener,null, pictureCallback);
-		}else{
-			camera.autoFocus(autoFocusCallback);
+		if( !tackenpicture ){
+			Log.d(LOGTAG,"takepicture");
+			touchhold = true;
+			PreferenceController control=new PreferenceController(cameraActivity);
+			if(!control.getBoolean("camera_autofocus")){
+				camera.takePicture(shutterListener,null, pictureCallback);
+			}else{
+				camera.autoFocus(autoFocusCallback);
+			}
+			touchhold = false;
+			tackenpicture = true;
 		}
+	}
+	
+	// Do Focus
+	//-------------------------------------------
+	public void doOnlyFocus(){
+		camera.autoFocus(autoFocusNullCallback);
 	}
 	
 	// Camera callbacks
@@ -146,6 +175,15 @@ public class CameraView extends SurfaceView
 			// TODO Auto-generated method stub
 			camera.autoFocus(null);
 			camera.takePicture(shutterListener, null, pictureCallback);
+		}
+	};
+	
+	private Camera.AutoFocusCallback autoFocusNullCallback=new Camera.AutoFocusCallback() {
+		@Override
+		public void onAutoFocus(boolean success, Camera camera) {
+			// TODO Auto-generated method stub
+			camera.autoFocus(null);
+			//camera.takePicture(shutterListener, null, pictureCallback);
 		}
 	};
 	
@@ -187,15 +225,65 @@ public class CameraView extends SurfaceView
 	}
 	
 	private void setGeoParams(Camera.Parameters params){
-		
+		Log.d(LOGTAG, "GeoParam set");
 		params.remove("gps-latitude");
 		params.remove("gps-longitude");
 		params.remove("gps-altitude");
+		params.remove("gps-timestamp");
+		params.remove("gps-processing-method");
 		
-		params.set("gps-latitude", "35.0");
-		params.set("gps-longitude", "137.0");
-		params.set("gps-altitude", "50");
-		params.set("jpeg-quality", "100");
-		params.set("gps-timestamp", "2010/12/15");
+		String lat = String.valueOf(GPSController.getLatitude());
+		String lon = String.valueOf(GPSController.getLongitude());
+		String alt = String.valueOf(GPSController.getAltitude());
+		String time = String.valueOf(GPSController.getTimestamp());
+		String provider = String.valueOf(GPSController.getProvider());
+		
+		Log.d(LOGTAG,"Geo lat:"+lat);
+		Log.d(LOGTAG,"Geo lon:"+lon);
+		Log.d(LOGTAG,"Geo alt:"+alt);
+		Log.d(LOGTAG,"Geo time:"+time);
+		Log.d(LOGTAG,"Geo provider:"+provider);
+		
+		params.set("gps-latitude", lat);
+		params.set("gps-longitude", lon);
+		params.set("gps-altitude", alt);
+		params.set("gps-timestamp", time);
+		params.set("gps-processing-method", provider);
 	}
+	
+	private void setJpegQuality(Camera.Parameters params){
+		PreferenceController control = new PreferenceController(cameraActivity);
+		int q = control.getInt("camera_quality");
+		if( q == 0 ){return ;}
+		String quality = String.valueOf(q);
+		Log.d(LOGTAG,"camera quality"+quality);
+		params.remove("jpeg-quality");
+		params.set("jpeg-quality", quality);
+		
+	}
+	
+	private void setPictureSize(Camera.Parameters params, int w, int h){
+		List<Size> sizes = Reflect.getSupportedPictureSizes(params);
+		String[] picturesize = preferenceController.getString("camera_picturesize").split(" ");
+		Log.d(LOGTAG,"picture size");
+		if(sizes == null || picturesize.length != 2){
+			Log.d(LOGTAG,"picture size is null");
+			return;
+		}
+		
+		int pwidth = Integer.valueOf(picturesize[0]);
+		int pheight = Integer.valueOf(picturesize[1]);
+		Log.d(LOGTAG, "picture size : " + pwidth + "," + pheight );
+		for( int i=0; i<sizes.size(); i++ ){
+			Size s=sizes.get(i);
+			if( ( s.width == pwidth ) &&
+			    ( s.height == pheight ) ){
+				params.setPictureSize(s.width, s.height);
+				break;
+			}
+			Log.d(LOGTAG,"["+i+"]:"+s.width+","+s.height);
+		}
+	}
+	
+	
 }

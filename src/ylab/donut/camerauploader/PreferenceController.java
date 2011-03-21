@@ -18,11 +18,15 @@ public class PreferenceController{
 		//share = PreferenceManager.getDefaultSharedPreferences(context);
 		return share.getString(key, "");
 	}
+	public int getInt(String key){
+		return share.getInt(key, 0);
+	}
 	public String getSaveFilePath(){
 		//share = PreferenceManeger.getDefaultS
 		String filename = share.getString("filename", "");
 		return "/sdcard/" + filename;
 	}
+	
 	private void updateSharedPreferences(){
 		share = PreferenceManager.getDefaultSharedPreferences(context);
 	}

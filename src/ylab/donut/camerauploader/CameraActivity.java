@@ -25,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.widget.*;
 import android.view.*;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.content.*;
 import android.util.Log;
 
@@ -32,12 +33,23 @@ import android.util.Log;
 public class CameraActivity extends Activity{
 	private final static String LOGTAG="Camera";
 	private CameraView cameraView;
+	private CameraOverlay cameraOverlay;
+	private SensorController sensorController;
+	private GPSController gpsController;
 	// Application initialize
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		Log.d(LOGTAG,"onCreate");
 		cameraView=new CameraView(this);
 		setContentView(cameraView);
+		cameraOverlay = new CameraOverlay(this,cameraView);
+		addContentView(cameraOverlay, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
+		
+		//
+		sensorController = SensorController.getInstance();
+		sensorController.init(this);
+		gpsController = GPSController.getInstance();
+		gpsController.init(this);
 	}
 	
 	// menu
@@ -62,12 +74,16 @@ public class CameraActivity extends Activity{
 	public void onPause(){
 		super.onPause();
 		Log.d(LOGTAG,"onPause");
+		sensorController.stop();
+		gpsController.stop();
 	}
 	public void onResume(){
 		super.onResume();
 		Log.d(LOGTAG,"onResume");
-		cameraView=new CameraView(this);
-		setContentView(cameraView);
+		//cameraView=new CameraView(this);
+		//setContentView(cameraView);
+		sensorController.start();
+		gpsController.start();
 	}
 	public void onStart(){
 		super.onStart();
@@ -95,7 +111,8 @@ public class CameraActivity extends Activity{
 	}
 	
 	private void postAction(PreferenceController control){
-		String url=control.getString("posturl");
+		new BackgroundPost(this).execute("");
+		/*String url=control.getString("posturl");
 		String name=control.getString("postname");
 		String fpath=control.getSaveFilePath();
 		try{
@@ -104,7 +121,7 @@ public class CameraActivity extends Activity{
 			Toast.makeText(this, "post succeed", Toast.LENGTH_SHORT).show();
 		}catch(IOException e){
 			Toast.makeText(this, "error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
-		}
+		}*/
 	}
 	
 	private void mailAction(PreferenceController control){

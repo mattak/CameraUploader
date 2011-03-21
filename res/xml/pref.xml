@@ -76,6 +76,27 @@
 				android:title="@string/camera_flash_title"
 				android:summaryOn="@string/camera_flash_summaryOn"
 				android:summaryOff="@string/camera_flash_summaryOff"></CheckBoxPreference>
+			<ListPreference
+				android:key="camera_picturesize"
+				android:title="@string/camera_picturesize_title"
+				android:summary="@string/camera_picturesize_summary"
+				android:dialogTitle="@string/camera_picturesize_dialogTitle"
+				android:entries="@array/camera_picturesize_entries"
+				android:entryValues="@array/camera_picturesize_entryValues"
+				android:defaultValue="@string/camera_picturesize_defaultValue"></ListPreference>
+			<CheckBoxPreference
+				android:key="camera_latlon"
+				android:title="@string/camera_latlon_title"
+				android:summaryOn="@string/camera_latlon_summaryOn"
+				android:summaryOff="@string/camera_latlon_summaryOff"></CheckBoxPreference>
+			<ylab.donut.camerauploader.SeekBarPreference
+				android:key="camera_quality"
+				android:title="jpeg quality"
+				android:summary="not specified"
+				android:dialogMessage="Quality(0-100)"
+				android:defaultValue="90"
+				android:text="%"
+				android:max="100" />
 		</PreferenceScreen>
 	</PreferenceCategory>
 </PreferenceScreen>

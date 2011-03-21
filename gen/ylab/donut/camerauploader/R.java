@@ -9,25 +9,37 @@ package ylab.donut.camerauploader;
 
 public final class R {
     public static final class array {
+        public static final int camera_picturesize_entries=0x7f050002;
+        public static final int camera_picturesize_entryValues=0x7f050003;
         public static final int postormail_entries=0x7f050000;
         public static final int postormail_entryValues=0x7f050001;
     }
     public static final class attr {
     }
     public static final class drawable {
-        public static final int icon=0x7f020000;
+        public static final int android=0x7f020000;
+        public static final int focus=0x7f020001;
+        public static final int focus1=0x7f020002;
+        public static final int gallery=0x7f020003;
+        public static final int icon=0x7f020004;
+        public static final int menu=0x7f020005;
+        public static final int shot=0x7f020006;
+        public static final int shot1=0x7f020007;
     }
     public static final class id {
+        public static final int LinearLayoutForSeekBarPreference=0x7f070007;
         public static final int RadioButton_get=0x7f070001;
         public static final int RadioButton_post=0x7f070002;
         public static final int RadioGroup_getpost=0x7f070000;
         public static final int ScrollView01=0x7f070005;
         public static final int edittext_uri=0x7f070004;
         public static final int execbutton=0x7f070003;
+        public static final int pref_seekbar=0x7f070008;
         public static final int textview_response=0x7f070006;
     }
     public static final class layout {
         public static final int main=0x7f030000;
+        public static final int preference_widget_seekbar=0x7f030001;
     }
     public static final class string {
         public static final int app_name=0x7f060001;
@@ -37,6 +49,18 @@ public final class R {
         public static final int camera_flash_summaryOff=0x7f060028;
         public static final int camera_flash_summaryOn=0x7f060027;
         public static final int camera_flash_title=0x7f060026;
+        public static final int camera_latlon_summaryOff=0x7f060032;
+        public static final int camera_latlon_summaryOn=0x7f060031;
+        public static final int camera_latlon_title=0x7f060030;
+        public static final int camera_picturesize_defaultValue=0x7f06002f;
+        public static final int camera_picturesize_dialogTitle=0x7f06002e;
+        public static final int camera_picturesize_summary=0x7f06002d;
+        public static final int camera_picturesize_title=0x7f06002c;
+        public static final int camera_quality_defaultValue=0x7f060036;
+        public static final int camera_quality_dialogMessage=0x7f060035;
+        public static final int camera_quality_summary=0x7f060034;
+        public static final int camera_quality_text=0x7f060037;
+        public static final int camera_quality_title=0x7f060033;
         public static final int camerascreen_summary=0x7f060025;
         public static final int camerascreen_title=0x7f060024;
         public static final int filename_defaultValue=0x7f060016;

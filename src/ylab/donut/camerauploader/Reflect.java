@@ -20,6 +20,7 @@ import java.util.*;
 
 public class Reflect{
 	private static Method Parameters_getSupportedPreviewSizes;
+	private static Method Parameters_getSupportedPictureSizes;
 	private final static String LOGTAG="Reflect";
 	static{
 		initCompatibility();
@@ -28,6 +29,8 @@ public class Reflect{
 		try{
 			Parameters_getSupportedPreviewSizes = Camera.Parameters.class.
 				getMethod("getSupportedPreviewSizes",new Class[]{});
+			Parameters_getSupportedPictureSizes = Camera.Parameters.class.
+				getMethod("getSupportedPictureSizes",new Class[]{});
 		}catch(NoSuchMethodException name){}
 	}
 	
@@ -56,4 +59,26 @@ public class Reflect{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static List<Size> getSupportedPictureSizes(Camera.Parameters p){
+		try{
+			if( Parameters_getSupportedPictureSizes != null){
+				return (List<Size>)Parameters_getSupportedPictureSizes.invoke(p);
+			}else{
+				return null;
+			}
+		}catch(InvocationTargetException e){
+			Throwable cause = e.getCause();
+			if(cause instanceof RuntimeException){
+				throw(RuntimeException)cause;
+			}else if(cause instanceof Error){
+				throw (Error)cause;
+			}else{
+				throw new RuntimeException(e);
+			}
+		}catch(IllegalAccessException e){
+			Log.e(LOGTAG,"IllegalAccessException");
+			return null;
+		}
+	}
 }

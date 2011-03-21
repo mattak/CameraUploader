@@ -58,4 +58,19 @@
 	<string name="camera_autofocus_title">camera autofocus</string>
 	<string name="camera_autofocus_summaryOn">on</string>
 	<string name="camera_autofocus_summaryOff">off</string>
+	
+	<string name="camera_picturesize_title">picture size</string>
+	<string name="camera_picturesize_summary">default max size</string>
+	<string name="camera_picturesize_dialogTitle">select picture size</string>
+	<string name="camera_picturesize_defaultValue">640 480</string>
+	
+	<string name="camera_latlon_title">latitude longitude</string>
+	<string name="camera_latlon_summaryOn">on</string>
+	<string name="camera_latlon_summaryOff">off</string>
+	
+	<string name="camera_quality_title">jpeg quality</string>
+	<string name="camera_quality_summary">not specified</string>
+	<string name="camera_quality_dialogMessage"></string>
+	<string name="camera_quality_defaultValue">90</string>
+	<string name="camera_quality_text">% quality</string>
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/LinearLayoutForSeekBarPreference"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <SeekBar
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:id="@+id/pref_seekbar"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:minWidth="100sp"></SeekBar>
+</LinearLayout>

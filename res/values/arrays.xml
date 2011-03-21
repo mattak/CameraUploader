@@ -8,4 +8,27 @@
 		<item>post</item>
 		<item>mail</item>
 	</string-array>
+
+	<string-array name="camera_picturesize_entries">
+		<item>320x240</item>
+		<item>400x300</item>
+		<item>640x480(VGA)</item>
+		<item>800x600(SVGA)</item>
+		<item>1024x768(XGA)</item>
+		<item>1280x960(SXGA)</item>
+		<item>1600x1200(UXGA)</item>
+		<item>2048x1536(QXGA)</item>
+		<item>default size</item>
+	</string-array>
+	<string-array name="camera_picturesize_entryValues">
+		<item>320 240</item>
+		<item>400 300</item>
+		<item>640 480</item>
+		<item>800 600</item>
+		<item>1024 768</item>
+		<item>1280 960</item>
+		<item>1600 1200</item>
+		<item>2048 1536</item>
+		<item>640 480</item>
+	</string-array>
 </resources>

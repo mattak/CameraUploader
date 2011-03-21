@@ -39,7 +39,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 		this.initSummaries(this.getPreferenceScreen());
 		// register the listener
 		this.getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-		//setPostListener();
+		
 	}
 	
 	// Preference Change Listener
@@ -49,6 +49,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 		this.setSummary(pref);
 	}
 	
+		
 	// Menu
 	//-------------------------------------------
 	public boolean onCreateOptionsMenu(Menu menu){
@@ -86,6 +87,9 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 		}else if( pref instanceof EditTextPreference){
 			EditTextPreference ep=(EditTextPreference)pref;
 			pref.setSummary(ep.getText());
+		}else if( pref instanceof SeekBarPreference){
+			SeekBarPreference sp= (SeekBarPreference)pref;
+			pref.setSummary(String.valueOf(sp.getProgress()));
 		}
 	}
 	
